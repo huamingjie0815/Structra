@@ -12,8 +12,10 @@ use std::{
 
 use tauri::{
     menu::{Menu, MenuBuilder, MenuItem, MenuItemBuilder, MenuItemKind, SubmenuBuilder},
-    AppHandle, Emitter, Manager, RunEvent, State, Url,
+    AppHandle, Emitter, Manager, RunEvent, State,
 };
+#[cfg(any(target_os = "macos", target_os = "ios", target_os = "android"))]
+use tauri::Url;
 
 const TEXT_READ_EXTENSIONS: &[&str] = &["structra", "json", "mmd", "md", "txt"];
 const TEXT_WRITE_EXTENSIONS: &[&str] = &["structra", "json", "svg", "mmd", "md", "txt"];
@@ -77,6 +79,7 @@ where
         .collect()
 }
 
+#[cfg(any(target_os = "macos", target_os = "ios", target_os = "android"))]
 fn document_open_paths_from_urls(urls: &[Url]) -> Vec<String> {
     urls.iter()
         .filter_map(|url| url.to_file_path().ok())
@@ -634,6 +637,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(any(target_os = "macos", target_os = "ios", target_os = "android"))]
     fn native_document_open_paths_convert_file_urls() {
         let valid = Url::from_file_path("/tmp/order.structra").expect("file URL should build");
         let unsupported = Url::from_file_path("/tmp/notes.txt").expect("file URL should build");
