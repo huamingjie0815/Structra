@@ -537,6 +537,16 @@ fn build_app_menu(app: &tauri::AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
         .build()
 }
 
+#[cfg(any(target_os = "macos", target_os = "ios", target_os = "android"))]
+fn handle_run_event(app: &AppHandle, event: RunEvent) {
+    if let RunEvent::Opened { urls } = event {
+        push_pending_open_documents(app, document_open_paths_from_urls(&urls));
+    }
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "ios", target_os = "android")))]
+fn handle_run_event(_app: &AppHandle, _event: RunEvent) {}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let initial_open_document_paths = document_open_paths_from_args(std::env::args_os());
@@ -569,9 +579,7 @@ pub fn run() {
         .build(tauri::generate_context!())
         .expect("error while building tauri application")
         .run(|app, event| {
-            if let RunEvent::Opened { urls } = event {
-                push_pending_open_documents(app, document_open_paths_from_urls(&urls));
-            }
+            handle_run_event(app, event);
         });
 }
 
