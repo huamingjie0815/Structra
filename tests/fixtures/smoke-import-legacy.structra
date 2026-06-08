@@ -1,0 +1,79 @@
+{
+  "schema": "structra.diagram-document",
+  "version": 1,
+  "document": {
+    "pages": [
+      {
+        "id": "smoke-structra-page",
+        "name": "Structra 文档导入",
+        "nodes": [
+          {
+            "id": "smoke-structra-start",
+            "type": "diagram",
+            "position": {
+              "x": 140,
+              "y": 140
+            },
+            "data": {
+              "label": "Structra导入开始",
+              "shape": "terminator",
+              "fill": "#e6f6ee",
+              "stroke": "#1f9d63",
+              "text": "#17342a",
+              "fontSize": 14,
+              "textAlign": "center",
+              "width": 150,
+              "height": 56
+            }
+          },
+          {
+            "id": "smoke-structra-end",
+            "type": "diagram",
+            "position": {
+              "x": 390,
+              "y": 135
+            },
+            "data": {
+              "label": "Structra导入结束",
+              "shape": "document",
+              "fill": "#f4f0ff",
+              "stroke": "#7559c7",
+              "text": "#2d2548",
+              "fontSize": 14,
+              "textAlign": "center",
+              "width": 158,
+              "height": 76
+            }
+          }
+        ],
+        "edges": [
+          {
+            "id": "smoke-structra-edge",
+            "source": "smoke-structra-start",
+            "target": "smoke-structra-end",
+            "type": "smoothstep",
+            "label": "下一步",
+            "data": {
+              "bendOffset": 20
+            },
+            "style": {
+              "stroke": "#46515f",
+              "strokeWidth": 1.8
+            }
+          }
+        ],
+        "comments": []
+      }
+    ],
+    "activePageId": "smoke-structra-page",
+    "settings": {
+      "showGrid": true,
+      "showRulers": true,
+      "snapToGrid": true,
+      "gridSize": 12,
+      "gridVariant": "lines",
+      "pagePreset": "content",
+      "background": "#f8fafc"
+    }
+  }
+}

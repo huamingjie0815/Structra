@@ -1,0 +1,753 @@
+/* ==========================================================================
+   Refined Studio (精致工作室) - 本地工作台专业重新设计
+   ========================================================================== */
+
+.local-workspace {
+  position: absolute;
+  inset: 56px 0 0;
+  z-index: 30;
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr);
+  gap: 16px;
+  padding: 20px 24px;
+  color: var(--app-text);
+  background-color: var(--app-bg);
+  /* 极致画纸点阵底图纹理与微光效果 */
+  background-image:
+    radial-gradient(var(--app-border-strong) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(15, 137, 200, 0.04) 0%, transparent 50%);
+  background-size: 20px 20px, 100% 100%;
+  background-position: center;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   顶部标题与文档状态区
+   ========================================================================== */
+
+.local-workspace-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.local-workspace-kicker {
+  display: inline-block;
+  color: var(--app-brand);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.local-workspace h1 {
+  margin: 2px 0 4px;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--app-heading);
+}
+
+.local-workspace p {
+  margin: 0;
+  color: var(--app-text-muted);
+  font-size: 12px;
+}
+
+/* ==========================================================================
+   Hero 主操作入口卡片 (水平对齐 Grid)
+   ========================================================================== */
+
+.workspace-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.workspace-actions button {
+  display: grid !important;
+  grid-template-columns: 24px minmax(0, 1fr) !important;
+  gap: 3px 12px !important;
+  align-items: center !important;
+  min-height: 66px !important;
+  padding: 14px 18px !important;
+  border: 1px solid var(--app-border) !important;
+  border-radius: 12px !important;
+  color: var(--app-control-text) !important;
+  background: var(--app-surface) !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  position: relative !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 5px var(--app-panel-shadow) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* 左侧彩色设计微装饰（左边框） */
+.workspace-actions button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  transition: width 0.25s ease;
+}
+
+.workspace-actions button:nth-child(1)::before {
+  background: #10b981; /* 翠绿色 */
+}
+
+.workspace-actions button:nth-child(2)::before {
+  background: var(--app-brand); /* 品牌蓝色 */
+}
+
+.workspace-actions button:nth-child(3)::before {
+  background: #f59e0b; /* 金黄色 */
+}
+
+.workspace-actions svg {
+  grid-row: span 2 !important;
+  transition: transform 0.25s ease !important;
+}
+
+.workspace-actions button:nth-child(1) svg { color: #10b981; }
+.workspace-actions button:nth-child(2) svg { color: var(--app-brand); }
+.workspace-actions button:nth-child(3) svg { color: #f59e0b; }
+
+.workspace-actions strong {
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  color: var(--app-heading) !important;
+  margin: 0 !important;
+}
+
+.workspace-actions span {
+  color: var(--app-text-muted) !important;
+  font-size: 11.5px !important;
+  margin: 0 !important;
+}
+
+/* Hover 与 Active 微交互 */
+.workspace-actions button:hover {
+  border-color: var(--app-border-strong) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 16px var(--app-panel-shadow) !important;
+  background: var(--app-hover) !important;
+}
+
+.workspace-actions button:hover::before {
+  width: 6px;
+}
+
+.workspace-actions button:hover svg {
+  transform: scale(1.1) rotate(-3deg);
+}
+
+/* ==========================================================================
+   仪表盘数据面板 (Stats Metric Bar)
+   ========================================================================= */
+
+.workspace-stats {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 10px 16px;
+  background: var(--app-surface-muted);
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
+}
+
+.workspace-stats span {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--app-text-muted);
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.workspace-stats strong {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--app-heading);
+  font-family: monospace;
+}
+
+/* ==========================================================================
+   主内容网格结构 (Split Layout)
+   ========================================================================== */
+
+.workspace-content {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 16px;
+  min-height: 0;
+}
+
+.workspace-recent,
+.workspace-templates {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.workspace-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--app-heading);
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.workspace-section-title span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.workspace-section-title svg {
+  color: var(--app-text-soft);
+}
+
+.workspace-section-action {
+  height: 22px;
+  padding: 0 8px;
+  border: 1px solid var(--app-border);
+  border-radius: 6px;
+  color: var(--app-text-muted);
+  background: var(--app-surface);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.workspace-section-action:hover {
+  border-color: var(--app-brand);
+  color: var(--app-brand);
+  background: var(--app-brand-soft);
+}
+
+/* ==========================================================================
+   最近打开列表 (Recent Documents List)
+   ========================================================================== */
+
+.workspace-recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 2px;
+}
+
+.workspace-recent-row {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.workspace-recent-open {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  gap: 4px 8px !important;
+  width: 100% !important;
+  padding: 10px 12px !important;
+  border: 1px solid var(--app-border) !important;
+  border-radius: 10px !important;
+  color: var(--app-text) !important;
+  background: var(--app-surface) !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+  box-shadow: 0 1px 3px var(--app-panel-shadow) !important;
+}
+
+.workspace-recent-badge {
+  grid-column: 1 !important;
+  align-self: center !important;
+  padding: 2px 6px !important;
+  border-radius: 6px !important;
+  color: var(--app-brand) !important;
+  background: var(--app-brand-soft) !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+}
+
+.workspace-recent-badge.compatible {
+  color: #c27803 !important;
+  background: #fffbeb !important;
+}
+
+.workspace-recent-badge.unknown {
+  color: var(--app-text-soft) !important;
+  background: var(--app-surface-muted) !important;
+}
+
+.workspace-recent-open strong {
+  grid-column: 2 !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  color: var(--app-heading) !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  margin: 0 !important;
+}
+
+.workspace-recent-open span,
+.workspace-recent-open em {
+  grid-column: 1 / -1 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  margin: 0 !important;
+}
+
+.workspace-recent-open span {
+  color: var(--app-text-muted) !important;
+  font-size: 11px !important;
+}
+
+.workspace-recent-open em {
+  color: var(--app-text-soft) !important;
+  font-size: 10px !important;
+  font-style: normal !important;
+  margin-top: 2px !important;
+}
+
+/* 消除噪音：删除按钮仅在 Hover 时显现 */
+.workspace-recent-remove {
+  position: absolute;
+  right: 8px;
+  top: 10px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--app-border);
+  border-radius: 6px;
+  color: var(--app-text-soft);
+  background: var(--app-surface);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.9);
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.workspace-recent-row:hover .workspace-recent-open {
+  border-color: var(--app-brand) !important;
+  background: var(--app-hover) !important;
+  box-shadow: 0 4px 10px var(--app-panel-shadow) !important;
+}
+
+.workspace-recent-row:hover .workspace-recent-remove {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.workspace-recent-remove:hover {
+  border-color: #fca5a5;
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+/* ==========================================================================
+   模板中心 (Templates Workspace Area)
+   ========================================================================== */
+
+.workspace-template-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.workspace-template-toolbar .workspace-section-title {
+  margin-bottom: 0;
+}
+
+/* 现代搜索输入框 */
+.workspace-search {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  width: 240px;
+  padding: 0 10px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: var(--app-surface);
+  box-shadow: 0 1px 2px var(--app-panel-shadow);
+  transition: all 0.2s;
+}
+
+.workspace-search svg {
+  color: var(--app-text-soft);
+}
+
+.workspace-search input {
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  color: var(--app-text);
+  background: transparent;
+  font-size: 12px;
+}
+
+.workspace-search input::placeholder {
+  color: var(--app-text-soft);
+}
+
+.workspace-search:focus-within {
+  border-color: var(--app-brand);
+  box-shadow: 0 0 0 2px var(--app-brand-soft);
+}
+
+/* 极其现代的 Segmented Capsule 选项卡 */
+.workspace-template-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--app-surface-muted);
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
+  margin-top: 10px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+
+/* 隐藏移动端滚动条 */
+.workspace-template-tabs::-webkit-scrollbar {
+  display: none;
+}
+.workspace-template-tabs {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.workspace-template-tabs button {
+  height: 26px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 6px;
+  color: var(--app-text-muted);
+  background: transparent;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.workspace-template-tabs button:hover {
+  color: var(--app-text);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.workspace-template-tabs button.active {
+  color: var(--app-brand);
+  background: var(--app-surface);
+  box-shadow: 0 1px 4px var(--app-panel-shadow);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   精细高阶水平网格卡片 (Premium Horizontal Grid Cards)
+   ========================================================================== */
+
+.workspace-template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 280px);
+  grid-auto-rows: 82px;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 2px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* 整个卡片容器（严格锁定固定宽高，防止被网格或父级 flex 拉伸） */
+.workspace-template-entry {
+  position: relative;
+  width: 280px !important;
+  height: 82px !important;
+  min-width: 280px !important;
+  max-width: 280px !important;
+  min-height: 82px !important;
+  max-height: 82px !important;
+  box-sizing: border-box !important;
+  display: flex;
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  background: var(--app-surface);
+  box-shadow: 0 1px 3px var(--app-panel-shadow);
+  overflow: hidden;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.workspace-template-entry:hover {
+  transform: translateY(-2px);
+  border-color: var(--app-brand);
+  box-shadow: 0 6px 14px var(--app-panel-shadow);
+}
+
+/* 卡片的可点击区域（强制重写为 2 列水平布局） */
+.workspace-template-card {
+  display: grid !important;
+  grid-template-columns: 96px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 80px !important;
+  padding: 10px !important;
+  border: none !important;
+  background: transparent !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+}
+
+/* 缩略图区 (Figma-style Blueprint Viewport) */
+.template-thumbnail {
+  grid-column: 1 !important;
+  width: 96px !important;
+  height: 60px !important;
+  min-width: 96px !important;
+  min-height: 60px !important;
+  max-width: 96px !important;
+  max-height: 60px !important;
+  background-color: var(--app-surface-muted) !important;
+  /* 带有淡淡工程感的技术点阵纹理 */
+  background-image:
+    radial-gradient(var(--app-border-strong) 1.2px, transparent 1.2px) !important;
+  background-size: 10px 12px !important;
+  background-position: center !important;
+  border: 1px solid var(--app-border) !important;
+  border-radius: 8px !important;
+  padding: 4px !important;
+  box-sizing: border-box !important;
+  transition: transform 0.22s ease !important;
+  overflow: hidden !important;
+}
+
+.page-thumbnail-bg {
+  fill: transparent !important; /* 隐藏默认的 SVG 纯白大底，直接显示完美的技术背景 */
+}
+
+.workspace-template-entry:hover .template-thumbnail {
+  transform: scale(1.03);
+  border-color: var(--app-brand-hover) !important;
+}
+
+/* 文本 Drawer 细节 */
+.workspace-template-meta {
+  grid-column: 2 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+
+.workspace-template-meta strong {
+  color: var(--app-heading) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  margin: 0 !important;
+}
+
+.workspace-template-meta span {
+  color: var(--app-text-muted) !important;
+  font-size: 11px !important;
+  line-height: 1.4 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  margin: 0 !important;
+}
+
+.workspace-template-meta em {
+  color: var(--app-text-soft) !important;
+  font-size: 10px !important;
+  font-style: normal !important;
+  margin-top: 2px !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* ==========================================================================
+   右上角浮动工具吊坠（仅 Hover 时滑入出现）
+   ========================================================================== */
+
+.workspace-template-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 4px;
+  z-index: 10;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.workspace-template-entry:hover .workspace-template-actions {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.workspace-template-favorite,
+.workspace-template-delete {
+  width: 24px !important;
+  height: 24px !important;
+  min-height: 0 !important;
+  border-radius: 6px !important;
+  border: 1px solid var(--app-border) !important;
+  background: var(--app-surface) !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06) !important;
+  display: grid !important;
+  place-items: center !important;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--app-text-muted) !important;
+  padding: 0 !important;
+}
+
+.workspace-template-favorite:hover,
+.workspace-template-favorite.active {
+  border-color: #d5a231 !important;
+  color: #b38600 !important;
+  background: #fffbf0 !important;
+}
+
+.workspace-template-favorite.active {
+  color: #e6b800 !important;
+  fill: #e6b800;
+}
+
+.workspace-template-delete:hover {
+  border-color: #fca5a5 !important;
+  color: #dc2626 !important;
+  background: #fef2f2 !important;
+}
+
+/* ==========================================================================
+   空状态（Empty States）
+   ========================================================================== */
+
+.workspace-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 120px;
+  padding: 24px;
+  border: 1px dashed var(--app-border);
+  border-radius: 12px;
+  color: var(--app-text-soft);
+  background: var(--app-surface-muted);
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.workspace-empty.wide {
+  grid-column: 1 / -1;
+}
+
+.workspace-empty svg {
+  color: var(--app-text-soft);
+  opacity: 0.8;
+}
+
+.workspace-empty strong {
+  font-size: 13px;
+  color: var(--app-text-muted);
+  font-weight: 600;
+}
+
+.workspace-empty span {
+  font-size: 11px;
+  color: var(--app-text-soft);
+}
+
+/* ==========================================================================
+   响应式断点与完美适配
+   ========================================================================== */
+
+@media (max-width: 980px) {
+  .local-workspace {
+    overflow-y: auto;
+    grid-template-rows: auto;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .local-workspace-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .workspace-actions {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .workspace-stats {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .workspace-content {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .workspace-template-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .workspace-search {
+    width: 100%;
+  }
+
+  .workspace-template-grid {
+    max-height: none;
+    grid-template-columns: repeat(auto-fill, 280px);
+    grid-auto-rows: 82px;
+    justify-content: center;
+  }
+}

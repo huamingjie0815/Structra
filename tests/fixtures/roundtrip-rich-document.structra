@@ -1,0 +1,171 @@
+{
+  "schema": "structra.diagram-document",
+  "version": 1,
+  "document": {
+    "pages": [
+      {
+        "id": "roundtrip-page-main",
+        "name": "订单履约主流程",
+        "nodes": [
+          {
+            "id": "roundtrip-bpmn-task",
+            "type": "diagram",
+            "position": { "x": 120, "y": 120 },
+            "data": {
+              "label": "人工复核",
+              "shape": "bpmnTask",
+              "fill": "#eef6ff",
+              "stroke": "#1b6ca8",
+              "text": "#172033",
+              "fontSize": 14,
+              "textAlign": "center",
+              "bpmnTaskType": "user",
+              "width": 170,
+              "height": 72
+            }
+          },
+          {
+            "id": "roundtrip-er-entity",
+            "type": "diagram",
+            "position": { "x": 380, "y": 96 },
+            "data": {
+              "label": "Order",
+              "shape": "erEntity",
+              "fill": "#fff8e6",
+              "stroke": "#a15c00",
+              "text": "#2f2410",
+              "fontSize": 13,
+              "textAlign": "center",
+              "erFields": [
+                { "name": "order_id", "type": "uuid", "key": "PK" },
+                { "name": "customer_id", "type": "uuid", "key": "FK" },
+                { "name": "status", "type": "varchar" }
+              ],
+              "width": 190,
+              "height": 128
+            }
+          },
+          {
+            "id": "roundtrip-table",
+            "type": "diagram",
+            "position": { "x": 120, "y": 280 },
+            "data": {
+              "label": "SLA Matrix",
+              "shape": "table",
+              "fill": "#ffffff",
+              "stroke": "#46515f",
+              "text": "#172033",
+              "fontSize": 12,
+              "textAlign": "center",
+              "tableRows": 2,
+              "tableColumns": 2,
+              "tableCells": ["Channel", "SLA", "VIP", "2h"],
+              "width": 220,
+              "height": 110
+            }
+          },
+          {
+            "id": "roundtrip-hidden-note",
+            "type": "diagram",
+            "hidden": true,
+            "position": { "x": 650, "y": 280 },
+            "data": {
+              "label": "Hidden audit note",
+              "shape": "note",
+              "fill": "#f4f4f5",
+              "stroke": "#71717a",
+              "text": "#27272a",
+              "fontSize": 12,
+              "textAlign": "left",
+              "width": 160,
+              "height": 88
+            }
+          }
+        ],
+        "edges": [
+          {
+            "id": "roundtrip-task-order",
+            "source": "roundtrip-bpmn-task",
+            "target": "roundtrip-er-entity",
+            "sourceHandle": "right-source",
+            "targetHandle": "left-target",
+            "type": "smoothstep",
+            "label": "写入",
+            "data": {
+              "bendOffset": 18,
+              "waypoints": [{ "x": 310, "y": 156 }],
+              "connectorPreset": "association"
+            },
+            "style": {
+              "stroke": "#245a76",
+              "strokeWidth": 2
+            }
+          },
+          {
+            "id": "roundtrip-hidden-edge",
+            "source": "roundtrip-er-entity",
+            "target": "roundtrip-hidden-note",
+            "hidden": true,
+            "type": "smoothstep",
+            "label": "隐藏审计",
+            "data": { "bendOffset": 18 }
+          }
+        ],
+        "comments": [
+          {
+            "id": "roundtrip-comment-1",
+            "target": "node",
+            "targetId": "roundtrip-er-entity",
+            "x": 590,
+            "y": 80,
+            "text": "确认字段和审批结果保持同步",
+            "createdAt": "2026-06-07T00:00:00.000Z",
+            "replies": [
+              {
+                "id": "roundtrip-reply-1",
+                "text": "本地单机批注需要随文件保存",
+                "createdAt": "2026-06-07T00:05:00.000Z"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "roundtrip-page-mind",
+        "name": "发布复盘导图",
+        "nodes": [
+          {
+            "id": "roundtrip-mind-root",
+            "type": "diagram",
+            "position": { "x": 120, "y": 120 },
+            "data": {
+              "label": "发布复盘",
+              "shape": "mindTopic",
+              "fill": "#eaf8f0",
+              "stroke": "#23865a",
+              "text": "#143626",
+              "fontSize": 16,
+              "mindPriority": 1,
+              "mindProgress": 60,
+              "mindSide": "auto",
+              "width": 180,
+              "height": 68
+            }
+          }
+        ],
+        "edges": [],
+        "comments": []
+      }
+    ],
+    "activePageId": "roundtrip-page-main",
+    "settings": {
+      "showGrid": true,
+      "showRulers": false,
+      "snapToGrid": true,
+      "gridSize": 16,
+      "gridVariant": "dots",
+      "pagePreset": "wide",
+      "background": "#f7fbff"
+    }
+  }
+}

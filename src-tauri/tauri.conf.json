@@ -1,0 +1,54 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Structra",
+  "version": "0.1.0",
+  "identifier": "com.hmj.structra",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://127.0.0.1:1420",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Structra",
+        "width": 1440,
+        "height": 920,
+        "minWidth": 1120,
+        "minHeight": 720,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self' ipc: http://ipc.localhost; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost; worker-src 'self' blob:; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'",
+      "devCsp": "default-src 'self' http://127.0.0.1:1420 ipc: http://ipc.localhost; script-src 'self' http://127.0.0.1:1420 'unsafe-eval'; style-src 'self' http://127.0.0.1:1420 'unsafe-inline'; img-src 'self' data: blob: http://127.0.0.1:1420; font-src 'self' data: http://127.0.0.1:1420; connect-src 'self' ipc: http://ipc.localhost http://127.0.0.1:1420 ws://127.0.0.1:1420; worker-src 'self' blob:; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["app", "dmg"],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "fileAssociations": [
+      {
+        "ext": ["structra"],
+        "name": "Structra Document",
+        "description": "Local Structra document",
+        "role": "Editor",
+        "mimeType": "application/vnd.structra.diagram+json",
+        "rank": "Owner",
+        "exportedType": {
+          "identifier": "com.hmj.structra.document",
+          "conformsTo": ["public.json"]
+        }
+      }
+    ]
+  }
+}

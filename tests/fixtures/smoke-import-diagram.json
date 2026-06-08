@@ -1,0 +1,74 @@
+{
+  "pages": [
+    {
+      "id": "smoke-import-page",
+      "name": "导入验证",
+      "nodes": [
+        {
+          "id": "smoke-import-start",
+          "type": "diagram",
+          "position": {
+            "x": 120,
+            "y": 120
+          },
+          "data": {
+            "label": "导入开始",
+            "shape": "process",
+            "fill": "#f7fbff",
+            "stroke": "#3178c6",
+            "text": "#1f2937",
+            "fontSize": 14,
+            "textAlign": "center",
+            "width": 150,
+            "height": 64
+          }
+        },
+        {
+          "id": "smoke-import-end",
+          "type": "diagram",
+          "position": {
+            "x": 380,
+            "y": 120
+          },
+          "data": {
+            "label": "导入结束",
+            "shape": "decision",
+            "fill": "#fff5df",
+            "stroke": "#c07a12",
+            "text": "#1f2937",
+            "fontSize": 14,
+            "textAlign": "center",
+            "width": 126,
+            "height": 92
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "smoke-import-edge",
+          "source": "smoke-import-start",
+          "target": "smoke-import-end",
+          "type": "smoothstep",
+          "data": {
+            "bendOffset": 20
+          },
+          "style": {
+            "stroke": "#46515f",
+            "strokeWidth": 1.8
+          }
+        }
+      ],
+      "comments": []
+    }
+  ],
+  "activePageId": "smoke-import-page",
+  "settings": {
+    "showGrid": true,
+    "showRulers": true,
+    "snapToGrid": true,
+    "gridSize": 12,
+    "gridVariant": "lines",
+    "pagePreset": "content",
+    "background": "#f8fafc"
+  }
+}
